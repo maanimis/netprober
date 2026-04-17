@@ -90,5 +90,5 @@ export function printHeader(hosts: number, mode: string): void {
 }
 
 export function printInitialSummary(stats: Stats, cfg: Config): void {
-  process.stdout.write(buildSummary(stats, cfg) + "\n");
+  process.stdout.write(`${buildSummary(stats, cfg)}\n`);
 }

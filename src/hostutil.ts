@@ -1,4 +1,3 @@
-
 export function sanitizeHost(raw: string): string {
   let h = raw.replace(/["'\s]/g, "").trim();
   h = h.replace(/[?&].*$/, "");
@@ -12,7 +11,10 @@ export function isCIDR(target: string): boolean {
   try {
     const [base, prefix] = target.split("/");
     const parts = base.split(".").map(Number);
-    if (parts.length !== 4 || parts.some((p) => Number.isNaN(p) || p < 0 || p > 255))
+    if (
+      parts.length !== 4 ||
+      parts.some((p) => Number.isNaN(p) || p < 0 || p > 255)
+    )
       return false;
     const p = parseInt(prefix, 10);
     return !Number.isNaN(p) && p >= 0 && p <= 32;

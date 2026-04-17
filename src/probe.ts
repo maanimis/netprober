@@ -1,8 +1,4 @@
-import {
-  buildIPLine,
-  buildSummary,
-  clearSummary,
-} from "./display.js";
+import { buildIPLine, buildSummary, clearSummary } from "./display.js";
 import { appendLine } from "./fileio.js";
 import { expandCIDR, isCIDR } from "./hostutil.js";
 import { Mutex } from "./mutex.js";
@@ -60,15 +56,15 @@ async function emitIPLine(
   if (!config.verbose && !result.pingOk && !result.port443Ok) return;
   await printMutex.run(async () => {
     clearSummary();
-    process.stdout.write(buildIPLine(host, result, config) + "\n");
-    process.stdout.write(buildSummary(stats, config) + "\n");
+    process.stdout.write(`${buildIPLine(host, result, config)}\n`);
+    process.stdout.write(`${buildSummary(stats, config)}\n`);
   });
 }
 
 async function refreshSummary(config: Config): Promise<void> {
   await printMutex.run(async () => {
     clearSummary();
-    process.stdout.write(buildSummary(stats, config) + "\n");
+    process.stdout.write(`${buildSummary(stats, config)}\n`);
   });
 }
 

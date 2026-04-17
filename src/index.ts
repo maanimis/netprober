@@ -141,7 +141,7 @@ program
     await writeFinalOutput(config, mode);
 
     clearSummary();
-    process.stdout.write(buildSummary(stats, config, true) + "\n");
+    process.stdout.write(`${buildSummary(stats, config, true)}\n`);
   });
 
 program.parse(process.argv);
