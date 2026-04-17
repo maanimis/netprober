@@ -1,0 +1,55 @@
+{
+  "name": "netprober",
+  "version": "1.0.0",
+  "description": "Async host/IP prober — DNS resolution, port 443, ping, curl",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "check": "biome check --write --no-errors-on-unmatched",
+    "lint": "biome lint --write",
+    "format": "biome format --write",
+    "build": "bun build --target=node --production --minify src/index.ts --outfile dist/index.js",
+    "build:bin": "node ./build-bin.js",
+    "dev": "tsx src/index.ts",
+    "start": "npm run build && node dist/index.js",
+    "prepare": "husky"
+  },
+  "bin": {
+    "netprober": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "preferGlobal": true,
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "cidr-tools": "^11.3.3",
+    "commander": "^14.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "@types/node": "^25.6.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  },
+  "keywords": [
+    "netprober",
+    "cli",
+    "network",
+    "prober",
+    "ping",
+    "curl",
+    "dns",
+    "port-scan"
+  ]
+}
