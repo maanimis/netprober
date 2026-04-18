@@ -15,6 +15,11 @@ import { processHost } from "./probe.js";
 import { Semaphore } from "./semaphore.js";
 import { stats } from "./stats.js";
 import type { Config } from "./types.js";
+import { readFileSync } from "node:fs";
+
+const pkg = JSON.parse(
+  readFileSync(new URL("../package.json", import.meta.url), "utf-8"),
+);
 
 function makeConfig(opts: Record<string, unknown>): Config {
   return {
@@ -70,7 +75,7 @@ const program = new Command();
 program
   .name("netprobe")
   .description("Async host/IP prober — DNS resolution, port 443, ping, curl")
-  .version("1.0.0")
+  .version(pkg.version)
   .addOption(
     new Option("-i, --input <file>", "input hosts file").default("hosts.txt"),
   )
