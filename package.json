@@ -8,14 +8,14 @@
     "check": "biome check --write --no-errors-on-unmatched",
     "lint": "biome lint --write",
     "format": "biome format --write",
-    "build": "bun build --target=node --production --minify src/index.ts --outfile dist/index.js",
+    "build": "bun build --target=node --production --minify src/index.ts --outfile dist/netprober.bundled.mjs",
     "build:bin": "node ./build-bin.js",
     "dev": "tsx src/index.ts",
-    "start": "npm run build && node dist/index.js",
+    "start": "npm run build && node dist/netprober.bundled.mjs",
     "prepare": "husky"
   },
   "bin": {
-    "netprober": "dist/index.js"
+    "netprober": "dist/netprober.bundled.mjs"
   },
   "files": [
     "dist"
