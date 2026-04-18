@@ -1,6 +1,5 @@
 export interface Config {
   inputFile: string;
-  outputFile: string;
   outputPing: string;
   outputPorts: string;
   resolver: string;
@@ -13,6 +12,7 @@ export interface Config {
 }
 
 export interface IPResult {
+  host: string;
   ip: string;
   pingOk: boolean;
   port443Ok: boolean;
@@ -38,3 +38,5 @@ export interface Stats {
   dnsFail: number;
   startTime: number;
 }
+
+export type TextGenerator = (result: IPResult) => string;

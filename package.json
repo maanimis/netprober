@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "check": "biome check --write --no-errors-on-unmatched",
-    "lint": "biome lint --write",
+    "lint": "biome lint --write --unsafe",
     "format": "biome format --write",
     "build": "bun build --target=node --production --minify src/index.ts --outfile dist/netprober.bundled.mjs",
     "build:bin": "node ./build-bin.js",

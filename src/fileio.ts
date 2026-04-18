@@ -17,21 +17,3 @@ export async function readLines(file: string): Promise<string[]> {
     .map((l) => l.trim())
     .filter((l) => l && !l.startsWith("#"));
 }
-
-export async function collectValidIPs(
-  pingFile: string,
-  portsFile: string,
-): Promise<string[]> {
-  const seen = new Set<string>();
-  const result: string[] = [];
-  for (const file of [pingFile, portsFile]) {
-    const lines = await readLines(file);
-    for (const ip of lines) {
-      if (!seen.has(ip)) {
-        seen.add(ip);
-        result.push(ip);
-      }
-    }
-  }
-  return result;
-}

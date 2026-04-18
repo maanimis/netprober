@@ -2,7 +2,6 @@ import dns from "node:dns/promises";
 import { exec } from "node:child_process";
 import * as net from "node:net";
 import { promisify } from "node:util";
-import type { Config } from "./types.js";
 
 const execAsync = promisify(exec);
 
@@ -56,10 +55,10 @@ export async function digIPs(
   }
 }
 
-export async function pingIP(ip: string, cfg: Config): Promise<boolean> {
-  const timeout = cfg.timeout * cfg.pingCount + 5;
+export async function pingIP(ip: string): Promise<boolean> {
+  const timeout = globalThis.config.timeout * globalThis.config.pingCount + 5;
   const { code } = await run(
-    `ping -c ${cfg.pingCount} -W ${cfg.timeout} ${ip}`,
+    `ping -c ${globalThis.config.pingCount} -W ${globalThis.config.timeout} ${ip}`,
     timeout * 1_000,
   );
   return code === 0;

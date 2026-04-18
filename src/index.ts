@@ -3,14 +3,13 @@
 import chalk from "chalk";
 import { Command, Option } from "commander";
 import { existsSync } from "node:fs";
-import { appendFile, readFile, writeFile } from "node:fs/promises";
+import { appendFile, readFile } from "node:fs/promises";
 import {
   buildSummary,
   clearSummary,
   printHeader,
   printInitialSummary,
 } from "./display.js";
-import { collectValidIPs } from "./fileio.js";
 import { sanitizeHost } from "./hostutil.js";
 import { processHost } from "./probe.js";
 import { Semaphore } from "./semaphore.js";
@@ -20,7 +19,6 @@ import type { Config } from "./types.js";
 function makeConfig(opts: Record<string, unknown>): Config {
   return {
     inputFile: opts.input as string,
-    outputFile: opts.output as string,
     outputPing: opts.outputPing as string,
     outputPorts: opts.outputPorts as string,
     resolver: opts.resolver as string,
@@ -33,19 +31,22 @@ function makeConfig(opts: Record<string, unknown>): Config {
   };
 }
 
-function modeString(config: Config): string {
+function modeString(): string {
   const flags: string[] = [];
-  if (config.ping) flags.push("ping");
-  if (config.curl) flags.push("curl");
+  if (globalThis.config.ping) flags.push("ping");
+  if (globalThis.config.curl) flags.push("curl");
   flags.push("port443");
-  if (config.verbose) flags.push("verbose");
+  if (globalThis.config.verbose) flags.push("verbose");
   return flags.join("+");
 }
 
-async function initOutputFiles(config: Config, mode: string): Promise<void> {
+async function initOutputFiles(mode: string): Promise<void> {
   const ts = new Date().toISOString().replace("T", " ").slice(0, 19);
   const header = `\n\n# Generated: ${ts}  mode=${mode}\n\n`;
-  for (const file of [config.outputPing, config.outputPorts]) {
+  for (const file of [
+    globalThis.config.outputPing,
+    globalThis.config.outputPorts,
+  ]) {
     await appendFile(file, header, "utf-8");
   }
 }
@@ -62,16 +63,6 @@ async function loadHosts(inputFile: string): Promise<string[]> {
     .filter(Boolean)
     .map(sanitizeHost)
     .filter(Boolean);
-}
-
-async function writeFinalOutput(config: Config, mode: string): Promise<void> {
-  const ts = new Date().toISOString().replace("T", " ").slice(0, 19);
-  const valid = await collectValidIPs(config.outputPing, config.outputPorts);
-  const lines = [
-    `# Generated: ${ts}  mode=${mode}\n`,
-    ...valid.map((ip) => ip),
-  ];
-  await writeFile(config.outputFile, lines.join("\n"), "utf-8");
 }
 
 const program = new Command();
@@ -118,30 +109,30 @@ program
     ),
   )
   .action(async (opts) => {
-    const config = makeConfig(opts);
-    const hosts = await loadHosts(config.inputFile);
+    globalThis.config = makeConfig(opts);
+    const hosts = await loadHosts(globalThis.config.inputFile);
 
     if (!hosts.length) {
-      console.log(chalk.yellow(`No hosts found in ${config.inputFile}.`));
+      console.log(
+        chalk.yellow(`No hosts found in ${globalThis.config.inputFile}.`),
+      );
       process.exit(0);
     }
 
     stats.totalHosts = hosts.length;
     stats.startTime = Date.now();
 
-    const mode = modeString(config);
-    await initOutputFiles(config, mode);
+    const mode = modeString();
+    await initOutputFiles(mode);
 
     printHeader(hosts.length, mode);
-    printInitialSummary(stats, config);
+    printInitialSummary(stats);
 
-    const semaphore = new Semaphore(config.concurrency);
-    await Promise.all(hosts.map((h) => processHost(h, semaphore, config)));
-
-    await writeFinalOutput(config, mode);
+    const semaphore = new Semaphore(globalThis.config.concurrency);
+    await Promise.all(hosts.map((h) => processHost(h, semaphore)));
 
     clearSummary();
-    process.stdout.write(`${buildSummary(stats, config, true)}\n`);
+    process.stdout.write(`${buildSummary(stats, true)}\n`);
   });
 
 program.parse(process.argv);

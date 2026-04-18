@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import type { Config, IPResult, Stats } from "./types.js";
+import type { IPResult, Stats } from "./types.js";
 
 const WIDTH = 70;
 
@@ -31,15 +31,15 @@ function sep(): string {
   return chalk.bold.cyan("━".repeat(WIDTH));
 }
 
-export function buildSummary(stats: Stats, cfg: Config, final = false): string {
+export function buildSummary(stats: Stats, final = false): string {
   const label = final ? "Final  Summary" : "Live   Summary";
   const { doneIps: done, totalIps: total } = stats;
 
-  const pingLine = cfg.ping
+  const pingLine = globalThis.config.ping
     ? `  ${chalk.blue("IPs     ")}  found ${chalk.bold(total)}   ${chalk.green(`ping-up ${stats.pingUp}`)}   ${chalk.red(`down ${total - stats.pingUp}`)}`
     : `  ${chalk.blue("IPs     ")}  found ${chalk.bold(total)}`;
 
-  const curlLine = cfg.curl
+  const curlLine = globalThis.config.curl
     ? `  ${chalk.blue("HTTPS   ")}  ${chalk.green(`✔ ok ${stats.curlOk}`)}   ${chalk.red(`✘ fail ${stats.pingUp - stats.curlOk}`)}`
     : `  ${chalk.blue("HTTPS   ")}  ${chalk.dim("skipped (use --curl)")}`;
 
@@ -58,11 +58,11 @@ export function buildSummary(stats: Stats, cfg: Config, final = false): string {
   return lines.join("\n");
 }
 
-export function buildIPLine(host: string, r: IPResult, cfg: Config): string {
+export function buildIPLine(host: string, r: IPResult): string {
   const codeColor = r.curlOk ? chalk.green : chalk.red;
   const info = r.curlInfo ? `  ${chalk.dim(r.curlInfo)}` : "";
-  const pingPart = cfg.ping ? `  ping ${icon(r.pingOk)}` : "";
-  const curlPart = cfg.curl
+  const pingPart = globalThis.config.ping ? `  ping ${icon(r.pingOk)}` : "";
+  const curlPart = globalThis.config.curl
     ? r.curlHttp
       ? `  curl ${icon(r.curlOk)}  HTTP ${codeColor(r.curlHttp)}${info}`
       : `  ${chalk.dim("curl n/a")}`
@@ -89,6 +89,6 @@ export function printHeader(hosts: number, mode: string): void {
   );
 }
 
-export function printInitialSummary(stats: Stats, cfg: Config): void {
-  process.stdout.write(`${buildSummary(stats, cfg)}\n`);
+export function printInitialSummary(stats: Stats): void {
+  process.stdout.write(`${buildSummary(stats, globalThis.config)}\n`);
 }
