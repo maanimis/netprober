@@ -60,7 +60,6 @@ netprober [options]
 | Flag                    | Description                      | Default          |
 | ----------------------- | -------------------------------- | ---------------- |
 | `-i, --input <file>`    | Input hosts file                 | `hosts.txt`      |
-| `-o, --output <file>`   | Main output — valid IPs          | `valid_ips.txt`  |
 | `--output-ping <file>`  | Ping-up IPs output file          | `ping_up.txt`    |
 | `--output-ports <file>` | Port-443-open IPs output file    | `ports_open.txt` |
 | `-r, --resolver <ip>`   | DNS resolver to use              | `127.0.0.1`      |
@@ -112,7 +111,6 @@ netprober -i targets.txt -o live.txt --output-ports open443.txt
 
 | File             | Contents                                          |
 | ---------------- | ------------------------------------------------- |
-| `valid_ips.txt`  | All IPs that were ping-up **or** port-443-open    |
 | `ping_up.txt`    | IPs responding to ICMP ping _(requires `--ping`)_ |
 | `ports_open.txt` | IPs with port 443 open                            |
 

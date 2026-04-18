@@ -75,11 +75,6 @@ program
     new Option("-i, --input <file>", "input hosts file").default("hosts.txt"),
   )
   .addOption(
-    new Option("-o, --output <file>", "main output file").default(
-      "valid_ips.txt",
-    ),
-  )
-  .addOption(
     new Option("--output-ping <file>", "ping-up IPs output").default(
       "ping_up.txt",
     ),
