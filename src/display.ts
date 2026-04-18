@@ -58,21 +58,24 @@ export function buildSummary(stats: Stats, final = false): string {
   return lines.join("\n");
 }
 
-export function buildIPLine(host: string, r: IPResult): string {
-  const codeColor = r.curlOk ? chalk.green : chalk.red;
-  const info = r.curlInfo ? `  ${chalk.dim(r.curlInfo)}` : "";
-  const pingPart = globalThis.config.ping ? `  ping ${icon(r.pingOk)}` : "";
+export function buildIPLine(result: IPResult): string {
+  const codeColor = result.curlOk ? chalk.green : chalk.red;
+  const info = result.curlInfo ? `  ${chalk.dim(result.curlInfo)}` : "";
+  const pingPart = globalThis.config.ping
+    ? `  ping ${icon(result.pingOk)}`
+    : "";
   const curlPart = globalThis.config.curl
-    ? r.curlHttp
-      ? `  curl ${icon(r.curlOk)}  HTTP ${codeColor(r.curlHttp)}${info}`
+    ? result.curlHttp
+      ? `  curl ${icon(result.curlOk)}  HTTP ${codeColor(result.curlHttp)}${info}`
       : `  ${chalk.dim("curl n/a")}`
     : "";
 
   return (
-    `  ${chalk.cyan(r.ip.padEnd(20))}` +
-    `  ${chalk.dim(host.padEnd(32))}` +
+    `  ${chalk.cyan(result.ip.padEnd(20))}` +
+    `  ${chalk.white(result.host.padEnd(20))}` +
+    `  ${chalk.dim(result.provider.padEnd(10))}` +
     pingPart +
-    `  443 ${icon(r.port443Ok)}` +
+    `  443 ${icon(result.port443Ok)}` +
     curlPart
   );
 }
@@ -90,5 +93,5 @@ export function printHeader(hosts: number, mode: string): void {
 }
 
 export function printInitialSummary(stats: Stats): void {
-  process.stdout.write(`${buildSummary(stats, globalThis.config)}\n`);
+  process.stdout.write(`${buildSummary(stats)}\n`);
 }

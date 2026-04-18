@@ -14,6 +14,7 @@ export interface Config {
 export interface IPResult {
   host: string;
   ip: string;
+  provider: string;
   pingOk: boolean;
   port443Ok: boolean;
   curlOk: boolean;

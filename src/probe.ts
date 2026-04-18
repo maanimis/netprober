@@ -1,6 +1,6 @@
 import { buildIPLine, buildSummary, clearSummary } from "./display.js";
 import { appendLine } from "./fileio.js";
-import { expandCIDR, isCIDR } from "./hostutil.js";
+import { detectProvider, expandCIDR, isCIDR } from "./hostutil.js";
 import { Mutex } from "./mutex.js";
 import {
   curlCheckDomain,
@@ -31,7 +31,7 @@ async function emitIPLine(result: IPResult): Promise<void> {
   if (!globalThis.config.verbose && !result.pingOk && !result.port443Ok) return;
   await printMutex.run(async () => {
     clearSummary();
-    process.stdout.write(`${buildIPLine(result.host, result)}\n`);
+    process.stdout.write(`${buildIPLine(result)}\n`);
     process.stdout.write(`${buildSummary(stats)}\n`);
   });
 }
@@ -52,6 +52,7 @@ async function probeIP(
   const result: IPResult = {
     host,
     ip,
+    provider: detectProvider(ip),
     pingOk: false,
     port443Ok: false,
     curlOk: false,

@@ -1,3 +1,6 @@
+import { containsCidr } from "cidr-tools";
+import { PROVIDERS } from "./providers.js";
+
 export function sanitizeHost(raw: string): string {
   let h = raw.replace(/["'\s]/g, "").trim();
   h = h.replace(/[?&].*$/, "");
@@ -21,6 +24,15 @@ export function isCIDR(target: string): boolean {
   } catch {
     return false;
   }
+}
+
+export function detectProvider(ip: string): string {
+  for (const [provider, cidrs] of Object.entries(PROVIDERS)) {
+    if (containsCidr(cidrs, ip)) {
+      return provider;
+    }
+  }
+  return "Unknown";
 }
 
 export function expandCIDR(cidr: string): string[] {
