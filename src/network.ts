@@ -2,7 +2,6 @@ import dns from "node:dns/promises";
 import { exec } from "node:child_process";
 import * as net from "node:net";
 import { promisify } from "node:util";
-import type { Config } from "./types.js";
 
 const execAsync = promisify(exec);
 
