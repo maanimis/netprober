@@ -106,15 +106,14 @@ function parseCurlResponse(
 export async function curlCheckDomain(
   domain: string,
   ip: string,
-  timeout: number,
 ): Promise<{ ok: boolean; code: string; info: string }> {
   const {
     code: rc,
     stdout,
     stderr,
   } = await run(
-    `curl -kv -s -o /dev/null --write-out "%{http_code}" --max-time ${timeout} https://${domain} --connect-to ${domain}:443:${ip}`,
-    (timeout + 5) * 1_000,
+    `curl -kv -s -o /dev/null --write-out "%{http_code}" --max-time ${globalThis.config.timeout} https://${domain} --connect-to ${domain}:443:${ip}`,
+    (globalThis.config.timeout + 5) * 1_000,
   );
   const parsed = parseCurlResponse(stdout, stderr);
   return { ...parsed, ok: rc === 0 && parsed.ok };
@@ -122,15 +121,14 @@ export async function curlCheckDomain(
 
 export async function curlCheckIP(
   ip: string,
-  timeout: number,
 ): Promise<{ ok: boolean; code: string; info: string }> {
   const {
     code: rc,
     stdout,
     stderr,
   } = await run(
-    `curl -kv -s -o /dev/null --write-out "%{http_code}" --max-time ${timeout} http://${ip}`,
-    (timeout + 5) * 1_000,
+    `curl -kv -s -o /dev/null --write-out "%{http_code}" --max-time ${globalThis.config.timeout} http://${ip}`,
+    (globalThis.config.timeout + 5) * 1_000,
   );
   const parsed = parseCurlResponse(stdout, stderr);
   return { ...parsed, ok: rc === 0 && parsed.ok };

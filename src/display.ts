@@ -71,7 +71,7 @@ export function buildIPLine(result: IPResult): string {
     : "";
 
   return (
-    `  ${chalk.cyan(result.ip.padEnd(20))}` +
+    `  ${chalk.cyan(result.ip.padEnd(14))}` +
     `  ${chalk.white(result.host.padEnd(20))}` +
     `  ${chalk.dim(result.provider.padEnd(10))}` +
     pingPart +

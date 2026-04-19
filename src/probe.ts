@@ -86,9 +86,7 @@ async function probeIP(
 
   if (globalThis.config.curl) {
     const curl = await semaphore.run(() =>
-      cidr
-        ? curlCheckIP(ip, globalThis.config.timeout)
-        : curlCheckDomain(host, ip, globalThis.config.timeout),
+      cidr ? curlCheckIP(ip) : curlCheckDomain(host, ip),
     );
     result.curlOk = curl.ok;
     result.curlHttp = curl.code;
