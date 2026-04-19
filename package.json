@@ -1,6 +1,6 @@
 {
   "name": "netprober",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "maanimis",
   "description": "Async host/IP prober — DNS resolution, port 443, ping, curl",
   "type": "module",
