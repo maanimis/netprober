@@ -20,6 +20,27 @@ DNS resolution · Port 443 · ICMP ping · HTTPS curl · CIDR sweep
 
 ## 📦 Installation
 
+### Via npm / pnpm / bun (global CLI)
+
+```bash
+# npm
+npm install -g netprober
+
+# pnpm
+pnpm add -g netprober
+
+# bun
+bun add -g netprober
+```
+
+Then use it anywhere:
+
+```bash
+netprober --help
+```
+
+---
+
 ### Run directly with Bun (no install)
 
 > Requires [Bun](https://bun.sh) — install it first
@@ -117,11 +138,13 @@ netprober -i targets.txt -o live.txt --output-ports open443.txt
 All files are written **in real time** as results come in — no waiting for the run to finish.
 
 ---
+
 ## Acknowledgements
 
 Provider list sourced from: [Expen1/MonPing](https://github.com/Expen1/MonPing/blob/ac17f7726aacb8d27f6181e9b12ea3d16f758320/monping.py#L53)
 
 ---
+
 ## 📄 License
 
 MIT © [maanimis](https://github.com/maanimis)
