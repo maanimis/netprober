@@ -139,12 +139,6 @@ All files are written **in real time** as results come in — no waiting for the
 
 ---
 
-## Acknowledgements
-
-Provider list sourced from: [Expen1/MonPing](https://github.com/Expen1/MonPing/blob/ac17f7726aacb8d27f6181e9b12ea3d16f758320/monping.py#L53)
-
----
-
 ## 📄 License
 
 MIT © [maanimis](https://github.com/maanimis)
