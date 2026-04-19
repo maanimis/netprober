@@ -19,7 +19,8 @@
     "netprober": "dist/netprober.bundled.mjs"
   },
   "files": [
-    "dist"
+    "dist",
+    "images"
   ],
   "repository": {
     "type": "git",
