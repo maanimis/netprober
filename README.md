@@ -41,7 +41,7 @@ netprober --help
 
 ---
 
-### Run directly with Bun (no install)
+### Run directly with Bun
 
 > Requires [Bun](https://bun.sh) — install it first
 
@@ -90,6 +90,7 @@ netprober [options]
 | `--ping`                | Enable ICMP ping checks          | `false`          |
 | `--curl`                | Enable HTTPS curl checks         | `false`          |
 | `-v, --verbose`         | Show all IPs, not just live ones | `false`          |
+| `-p, --ports`           | ports (e.g. 80,443,8000-8100)    | `443`            |
 
 ---
 
