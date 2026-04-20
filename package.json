@@ -1,6 +1,6 @@
 {
   "name": "netprober",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "maanimis",
   "description": "Concurrent Host/IP Prober with custom DNS resolution, port scanning, ping and curl support",
   "type": "module",
