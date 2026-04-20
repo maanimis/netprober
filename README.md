@@ -111,6 +111,12 @@ https://target.com/path   ← URLs are sanitized automatically
 # Basic — port 443(default) probe only
 netprober -i hosts.txt
 
+# Scan with multiport
+netprober -i hosts.txt -p 443,8080,80,2080,2053
+
+# Also can use range for ports(from 80 to 90)
+netprober -i hosts.txt -p 80-90
+
 # With ping + curl, using Google's DNS, 25 workers
 netprober --ping --curl -r 8.8.8.8 -c 25
 
