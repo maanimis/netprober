@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def fetch_prefixes(asn: str):
     # Normalize ASN (remove "AS" if present)
     asn_number = asn.upper().replace("AS", "").strip()
@@ -27,12 +28,11 @@ def main():
 
     prefixes = fetch_prefixes(asn)
 
-    with open("prefixes.json", "w") as f:
+    with open(f"{asn}.json", "w") as f:
         json.dump(prefixes, f, indent=2)
 
-    print(f"Saved {len(prefixes)} prefixes to prefixes.json")
+    print(f"Saved {len(prefixes)} prefixes to {asn}.json")
 
 
 if __name__ == "__main__":
     main()
-
