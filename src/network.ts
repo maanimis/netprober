@@ -2,7 +2,7 @@ import dns from "node:dns/promises";
 import { exec } from "node:child_process";
 import * as net from "node:net";
 import { promisify } from "node:util";
-import { Config, type IPResult } from "./types.js";
+import type { IPResult } from "./types.js";
 
 const execAsync = promisify(exec);
 
