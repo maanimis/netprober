@@ -2,7 +2,7 @@
 
 # 🔍 netprober
 
-** Concurrent Host/IP Prober with custom DNS resolution, port scanning, ping and curl support **
+**Concurrent Host/IP Prober with custom DNS resolution, port scanning, ping and curl support**
 
 ![preview](images/1.png)
 
@@ -11,8 +11,10 @@
 - **Live terminal summary** — progress bar, stats, and per-IP results update in real time
 - **CIDR expansion** — sweep entire subnets like `10.0.0.0/24` natively
 - **Concurrent probing** — tunable worker pool, non-blocking by default
-- **Multiple check modes** — multi port, ICMP ping, and HTTPS curl independently toggled
+- **Multiple check modes** — multi port, ICMP ,ping, and HTTPS curl independently toggled
 - **Structured output** — results written to separate files as they land, no waiting
+- **Support ip v4&v6**
+- **Detect Providers**
 
 ---
 
