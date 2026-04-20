@@ -15,11 +15,6 @@ import { processHost } from "./probe.js";
 import { Semaphore } from "./semaphore.js";
 import { stats } from "./stats.js";
 import type { Config } from "./types.js";
-import { readFileSync } from "node:fs";
-
-const pkg = JSON.parse(
-  readFileSync(new URL("../package.json", import.meta.url), "utf-8"),
-);
 
 function makeConfig(opts: Record<string, unknown>): Config {
   return {
@@ -124,9 +119,11 @@ function validatePort(port: number) {
 const program = new Command();
 
 program
-  .name(pkg.name)
-  .description(pkg.description)
-  .version(pkg.version)
+  .name("netprober")
+  .description(
+    "Concurrent Host/IP Prober with custom DNS resolution, port scanning, ping and curl support",
+  )
+  .version(process.env.VERSION || "dev")
   .addOption(
     new Option("-i, --input <file>", "input hosts file").default("hosts.txt"),
   )
