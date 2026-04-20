@@ -2,6 +2,7 @@ import dns from "node:dns/promises";
 import { exec } from "node:child_process";
 import * as net from "node:net";
 import { promisify } from "node:util";
+import { Config, type IPResult } from "./types.js";
 
 const execAsync = promisify(exec);
 
@@ -27,12 +28,9 @@ async function run(
   }
 }
 
-export async function digIPs(
-  host: string,
-  resolver: string,
-): Promise<string[]> {
+export async function digIPs(host: string): Promise<string[]> {
   const resolverObj = new dns.Resolver();
-  resolverObj.setServers([resolver]);
+  resolverObj.setServers([globalThis.config.resolver]);
 
   try {
     const [aRecords, aaaaRecords] = await Promise.allSettled([
@@ -64,28 +62,44 @@ export async function pingIP(ip: string): Promise<boolean> {
   return code === 0;
 }
 
-export async function socketCheck443(
+function checkPort(
+  timeoutMs: number,
   ip: string,
-  timeout: number,
+  port: number,
 ): Promise<boolean> {
   return new Promise((resolve) => {
     const socket = new net.Socket();
     const timer = setTimeout(() => {
       socket.destroy();
       resolve(false);
-    }, timeout * 1_000);
+    }, timeoutMs);
 
     socket
-      .connect(443, ip, () => {
+      .once("connect", () => {
         clearTimeout(timer);
         socket.destroy();
         resolve(true);
       })
-      .on("error", () => {
+      .once("error", () => {
         clearTimeout(timer);
         resolve(false);
-      });
+      })
+      .connect(port, ip);
   });
+}
+
+export async function socketCheck(
+  data: Pick<IPResult, "ip">,
+): Promise<number[]> {
+  const timeoutMs = globalThis.config.timeout * 1_000;
+
+  const result: number[] = [];
+  for (const port of globalThis.config.ports) {
+    const isOpen = await checkPort(timeoutMs, data.ip, port);
+    if (isOpen) result.push(port);
+  }
+
+  return result;
 }
 
 function parseCurlResponse(

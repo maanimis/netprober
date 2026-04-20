@@ -2,9 +2,7 @@
 
 # 🔍 netprober
 
-**Async host & IP prober — fast, concurrent, pretty.**
-
-DNS resolution · Port 443 · ICMP ping · HTTPS curl · CIDR sweep
+** Concurrent Host/IP Prober with custom DNS resolution, port scanning, ping and curl support **
 
 ![preview](images/1.png)
 
@@ -13,7 +11,7 @@ DNS resolution · Port 443 · ICMP ping · HTTPS curl · CIDR sweep
 - **Live terminal summary** — progress bar, stats, and per-IP results update in real time
 - **CIDR expansion** — sweep entire subnets like `10.0.0.0/24` natively
 - **Concurrent probing** — tunable worker pool, non-blocking by default
-- **Multiple check modes** — port 443 socket, ICMP ping, and HTTPS curl independently toggled
+- **Multiple check modes** — multi port, ICMP ping, and HTTPS curl independently toggled
 - **Structured output** — results written to separate files as they land, no waiting
 
 ---
@@ -82,7 +80,7 @@ netprober [options]
 | ----------------------- | -------------------------------- | ---------------- |
 | `-i, --input <file>`    | Input hosts file                 | `hosts.txt`      |
 | `--output-ping <file>`  | Ping-up IPs output file          | `ping_up.txt`    |
-| `--output-ports <file>` | Port-443-open IPs output file    | `ports_open.txt` |
+| `--output-ports <file>` | Open ports IPs output file       | `ports_open.txt` |
 | `-r, --resolver <ip>`   | DNS resolver to use              | `127.0.0.1`      |
 | `-c, --concurrency <n>` | Concurrent workers               | `10`             |
 | `-t, --timeout <s>`     | Per-check timeout in seconds     | `5`              |
@@ -110,7 +108,7 @@ https://target.com/path   ← URLs are sanitized automatically
 ## ⚡ Examples
 
 ```bash
-# Basic — port 443 probe only
+# Basic — port 443(default) probe only
 netprober -i hosts.txt
 
 # With ping + curl, using Google's DNS, 25 workers
@@ -123,7 +121,7 @@ netprober -v --curl -t 3
 netprober -i ranges.txt --curl -c 50
 
 # Custom output files
-netprober -i targets.txt -o live.txt --output-ports open443.txt
+netprober -i targets.txt -o live.txt --output-ports open_ports.txt
 ```
 
 ---
@@ -133,7 +131,7 @@ netprober -i targets.txt -o live.txt --output-ports open443.txt
 | File             | Contents                                          |
 | ---------------- | ------------------------------------------------- |
 | `ping_up.txt`    | IPs responding to ICMP ping _(requires `--ping`)_ |
-| `ports_open.txt` | IPs with port 443 open                            |
+| `ports_open.txt` | IPs with open ports                               |
 
 All files are written **in real time** as results come in — no waiting for the run to finish.
 

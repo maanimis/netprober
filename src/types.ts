@@ -9,6 +9,7 @@ export interface Config {
   verbose: boolean;
   ping: boolean;
   curl: boolean;
+  ports: number[];
 }
 
 export interface IPResult {
@@ -16,7 +17,7 @@ export interface IPResult {
   ip: string;
   provider: string;
   pingOk: boolean;
-  port443Ok: boolean;
+  ports: number[];
   curlOk: boolean;
   curlHttp: string;
   curlInfo: string;
@@ -34,7 +35,7 @@ export interface Stats {
   totalIps: number;
   doneIps: number;
   pingUp: number;
-  port443Ok: number;
+  ports: number;
   curlOk: number;
   dnsFail: number;
   startTime: number;

@@ -7,7 +7,7 @@ import {
   curlCheckIP,
   digIPs,
   pingIP,
-  socketCheck443,
+  socketCheck,
 } from "./network.js";
 import type { Semaphore } from "./semaphore.js";
 import { stats } from "./stats.js";
@@ -28,7 +28,8 @@ async function saveRealtimeIP(
 }
 
 async function emitIPLine(result: IPResult): Promise<void> {
-  if (!globalThis.config.verbose && !result.pingOk && !result.port443Ok) return;
+  if (!globalThis.config.verbose && !result.pingOk && !result.ports.length)
+    return;
   await printMutex.run(async () => {
     clearSummary();
     process.stdout.write(`${buildIPLine(result)}\n`);
@@ -54,7 +55,7 @@ async function probeIP(
     ip,
     provider: detectProvider(ip),
     pingOk: false,
-    port443Ok: false,
+    ports: [],
     curlOk: false,
     curlHttp: "",
     curlInfo: "",
@@ -72,16 +73,14 @@ async function probeIP(
     );
   }
 
-  result.port443Ok = await semaphore.run(() =>
-    socketCheck443(ip, globalThis.config.timeout),
-  );
-  if (result.port443Ok) stats.port443Ok++;
+  result.ports = await semaphore.run(() => socketCheck(result));
+  if (result.ports) stats.ports++;
 
   await saveRealtimeIP(
     result,
     globalThis.config.outputPorts,
     genPortText,
-    result.port443Ok,
+    Boolean(result.ports.length),
   );
 
   if (globalThis.config.curl) {
@@ -107,9 +106,7 @@ export async function processHost(
   const result: HostResult = { host, ips: [], digErr: "" };
   const cidr = isCIDR(host);
 
-  const ips = cidr
-    ? expandCIDR(host)
-    : await semaphore.run(() => digIPs(host, globalThis.config.resolver));
+  const ips = cidr ? expandCIDR(host) : await semaphore.run(() => digIPs(host));
 
   if (!ips.length) {
     result.digErr = cidr ? "invalid CIDR" : "no IPs resolved";

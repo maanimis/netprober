@@ -6,7 +6,7 @@ export const stats: Stats = {
   totalIps: 0,
   doneIps: 0,
   pingUp: 0,
-  port443Ok: 0,
+  ports: 0,
   curlOk: 0,
   dnsFail: 0,
   startTime: Date.now(),

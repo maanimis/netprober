@@ -6,7 +6,7 @@ export const genPingText: TextGenerator = (result: IPResult) => {
 };
 
 export const genPortText: TextGenerator = (result: IPResult) => {
-  const line = `[${result.host}] ${result.ip} ${result.provider} Port=443 \n`;
+  const line = `[${result.host}] ${result.ip} ${result.provider} Port=${result.ports.join(",")} \n`;
   return line;
 };
 

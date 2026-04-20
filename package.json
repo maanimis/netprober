@@ -1,8 +1,8 @@
 {
   "name": "netprober",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "maanimis",
-  "description": "Async host/IP prober — DNS resolution, port 443, ping, curl",
+  "description": "Concurrent Host/IP Prober with custom DNS resolution, port scanning, ping and curl support",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

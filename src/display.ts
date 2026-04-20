@@ -36,21 +36,21 @@ export function buildSummary(stats: Stats, final = false): string {
   const { doneIps: done, totalIps: total } = stats;
 
   const pingLine = globalThis.config.ping
-    ? `  ${chalk.blue("IPs     ")}  found ${chalk.bold(total)}   ${chalk.green(`ping-up ${stats.pingUp}`)}   ${chalk.red(`down ${total - stats.pingUp}`)}`
-    : `  ${chalk.blue("IPs     ")}  found ${chalk.bold(total)}`;
+    ? `  ${chalk.blue("IPs".padEnd(9))}  found ${chalk.bold(total)}   ${chalk.green(`ping-up ${stats.pingUp}`)}   ${chalk.red(`down ${total - stats.pingUp}`)}`
+    : `  ${chalk.blue("IPs".padEnd(9))}  found ${chalk.bold(total)}`;
 
   const curlLine = globalThis.config.curl
-    ? `  ${chalk.blue("HTTPS   ")}  ${chalk.green(`✔ ok ${stats.curlOk}`)}   ${chalk.red(`✘ fail ${stats.pingUp - stats.curlOk}`)}`
-    : `  ${chalk.blue("HTTPS   ")}  ${chalk.dim("skipped (use --curl)")}`;
+    ? `  ${chalk.blue("HTTPS".padEnd(9))}  ${chalk.green(`✔ ok ${stats.curlOk}`)}   ${chalk.red(`✘ fail ${stats.pingUp - stats.curlOk}`)}`
+    : `  ${chalk.blue("HTTPS".padEnd(9))}  ${chalk.dim("skipped (use --curl)")}`;
 
   const lines = [
     sep(),
     `  ${chalk.bold.cyan(label)}`,
     sep(),
-    `  ${chalk.blue("Progress")}  ${bar(done, total)}  ${chalk.cyan(`${done}/${total} IPs`)}  ${chalk.dim(`${pct(done, total)}  ${elapsed(stats.startTime)}`)}`,
-    `  ${chalk.blue("Hosts   ")}  total ${chalk.bold(stats.totalHosts)}   done ${chalk.bold(stats.doneHosts)}   dns-fail ${chalk.red(stats.dnsFail)}`,
+    `  ${chalk.blue("Progress".padEnd(9))}  ${bar(done, total)}  ${chalk.cyan(`${done}/${total} IPs`)}  ${chalk.dim(`${pct(done, total)}  ${elapsed(stats.startTime)}`)}`,
+    `  ${chalk.blue("Hosts".padEnd(9))}  total ${chalk.bold(stats.totalHosts)}   done ${chalk.bold(stats.doneHosts)}   dns-fail ${chalk.red(stats.dnsFail)}`,
     pingLine,
-    `  ${chalk.blue("Port 443")}  ${chalk.green(`✔ open ${stats.port443Ok}`)}   ${chalk.red(`✘ closed ${total - stats.port443Ok}`)}`,
+    `  ${chalk.blue("Port".padEnd(9))}  ${chalk.green(`✔ open ${stats.ports}`)}   ${chalk.red(`✘ closed ${total - stats.ports}`)}`,
     curlLine,
     sep(),
     "",
@@ -71,11 +71,11 @@ export function buildIPLine(result: IPResult): string {
     : "";
 
   return (
-    `  ${chalk.cyan(result.ip.padEnd(14))}` +
-    `  ${chalk.white(result.host.padEnd(20))}` +
+    `  ${chalk.cyan(result.ip.padEnd(30))}` +
+    `  ${chalk.white(result.host.padEnd(25))}` +
     `  ${chalk.dim(result.provider.padEnd(10))}` +
     pingPart +
-    `  443 ${icon(result.port443Ok)}` +
+    `  ${result.ports.join(",")}` +
     curlPart
   );
 }

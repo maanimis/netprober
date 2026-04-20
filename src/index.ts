@@ -33,6 +33,7 @@ function makeConfig(opts: Record<string, unknown>): Config {
     verbose: Boolean(opts.verbose),
     ping: Boolean(opts.ping),
     curl: Boolean(opts.curl),
+    ports: parsePorts(opts.ports as string),
   };
 }
 
@@ -40,7 +41,7 @@ function modeString(): string {
   const flags: string[] = [];
   if (globalThis.config.ping) flags.push("ping");
   if (globalThis.config.curl) flags.push("curl");
-  flags.push("port443");
+  flags.push(`ports ${globalThis.config.ports}`);
   if (globalThis.config.verbose) flags.push("verbose");
   return flags.join("+");
 }
@@ -70,11 +71,61 @@ async function loadHosts(inputFile: string): Promise<string[]> {
     .filter(Boolean);
 }
 
+function parsePorts(value: string): number[] {
+  const ports = new Set<number>();
+
+  const parts = value.split(",");
+
+  for (const part of parts) {
+    const trimmed = part.trim();
+
+    // Range support: 8000-8100
+    if (trimmed.includes("-")) {
+      const [startStr, endStr] = trimmed.split("-").map((v) => v.trim());
+
+      const start = Number(startStr);
+      const end = Number(endStr);
+
+      if (!Number.isInteger(start) || !Number.isInteger(end)) {
+        throw new Error(`Invalid port range: ${trimmed}`);
+      }
+
+      if (start > end) {
+        throw new Error(`Invalid range (start > end): ${trimmed}`);
+      }
+
+      for (let p = start; p <= end; p++) {
+        validatePort(p);
+        ports.add(p);
+      }
+
+      continue;
+    }
+
+    // Single port
+    const port = Number(trimmed);
+
+    if (!Number.isInteger(port)) {
+      throw new Error(`Invalid port: ${trimmed}`);
+    }
+
+    validatePort(port);
+    ports.add(port);
+  }
+  return [...ports];
+}
+
+function validatePort(port: number) {
+  if (port < 1 || port > 65535) {
+    throw new Error(`Port out of range (1-65535): ${port}`);
+  }
+}
+
 const program = new Command();
 
 program
-  .name("netprobe")
-  .description("Async host/IP prober — DNS resolution, port 443, ping, curl")
+  .name(pkg.name)
+  .description(pkg.description)
   .version(pkg.version)
   .addOption(
     new Option("-i, --input <file>", "input hosts file").default("hosts.txt"),
@@ -98,6 +149,11 @@ program
   .addOption(
     new Option("-t, --timeout <s>", "per-check timeout in seconds").default(
       "5",
+    ),
+  )
+  .addOption(
+    new Option("-p, --ports <ports>", "ports (e.g. 80,443,8000-8100)").default(
+      "443",
     ),
   )
   .addOption(new Option("--ping-count <n>", "ping packet count").default("3"))
