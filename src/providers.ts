@@ -3,6 +3,11 @@ import Amazon from "../providers/amazon.json" with { type: "json" };
 import Google from "../providers/google.json" with { type: "json" };
 import Microsoft from "../providers/microsoft.json" with { type: "json" };
 import Arvancloud from "../providers/arvancloud.json" with { type: "json" };
+import Asiatech from "../providers/asiatech.json" with { type: "json" };
+import Liara from "../providers/liara.json" with { type: "json" };
+import Canonical from "../providers/canonical.json" with { type: "json" };
+import Fastly from "../providers/fastly.json" with { type: "json" };
+import Gitiserver from "../providers/gitiserver.json" with { type: "json" };
 
 /*
 
@@ -21,6 +26,9 @@ Microsoft :
 Arvancloud:
   https://www.arvancloud.ir/en/ips.txt
 
+Fastly:
+  https://api.fastly.com/public-ip-list
+
 */
 
 export const PROVIDERS = {
@@ -29,4 +37,9 @@ export const PROVIDERS = {
   Google,
   Microsoft,
   Arvancloud,
+  Asiatech,
+  Liara,
+  Canonical,
+  Fastly,
+  Gitiserver,
 };
