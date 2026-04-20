@@ -8,14 +8,12 @@ import Liara from "../providers/liara.json" with { type: "json" };
 import Canonical from "../providers/canonical.json" with { type: "json" };
 import Fastly from "../providers/fastly.json" with { type: "json" };
 import Gitiserver from "../providers/gitiserver.json" with { type: "json" };
+import Sefroyek from "../providers/sefroyek.json" with { type: "json" };
 
 /*
 
 Cloudflare:
   https://api.cloudflare.com/client/v4/ips
-
-Amazon:
-  https://ip-ranges.amazonaws.com/ip-ranges.json
 
 Google:
   https://www.gstatic.com/ipranges/goog.json
@@ -28,6 +26,9 @@ Arvancloud:
 
 Fastly:
   https://api.fastly.com/public-ip-list
+
+OTHERS:
+  python3 asn-prefix-fetcher.py
 
 */
 
@@ -42,4 +43,5 @@ export const PROVIDERS = {
   Canonical,
   Fastly,
   Gitiserver,
+  Sefroyek,
 };
