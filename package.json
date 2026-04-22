@@ -10,7 +10,7 @@
     "lint": "biome lint --write --unsafe",
     "format": "biome format --write",
     "build": "bun build --target=node --production --minify src/index.ts --outfile dist/netprober.bundled.mjs",
-    "build:bin": "node ./build-bin.js",
+    "build:bin": "bun build --compile --production --minify --bytecode ./src/index.ts --outfile netprober",
     "dev": "tsx src/index.ts",
     "start": "npm run build && node dist/netprober.bundled.mjs",
     "prepare": "husky"
