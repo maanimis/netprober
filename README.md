@@ -55,18 +55,9 @@ bun ./src/index.ts --help
 
 ### Download prebuilt binary
 
-A standalone binary is available for **Linux x86-64 (amd64)** — no Node, no Bun required.
+A standalone binary is available:
+[**Releases**](https://github.com/maanimis/netprober/releases) page
 
-1. Head to the [**Releases**](https://github.com/maanimis/netprober/releases) page
-2. Download `netprober-linux-amd64`
-3. Make it executable and run:
-
-```bash
-chmod +x netprober-linux-amd64
-./netprober-linux-amd64 --help
-```
-
-> ⚠️ Only `linux/amd64` is currently available as a prebuilt binary. For other platforms, use the npm package or run with Bun directly.
 
 ---
 
